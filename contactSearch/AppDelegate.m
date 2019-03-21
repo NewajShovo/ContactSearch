@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "contactSearchViewController.h"
+#import <UIKit/UIKit.h>
 
 @interface AppDelegate ()
 

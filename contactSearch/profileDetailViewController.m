@@ -27,21 +27,22 @@
     //NSLog(@"%@",value.givenName);
     self.infoLabel.text = value.givenName;
     if([value.familyName length] > 0){
-    self.showLast.text=  @"None";
+    self.showLast.text=  value.familyName;
     }
     else{
-        self.showLast.text= value.familyName;
+        self.showLast.text= @"None";
     }
     
     CNLabeledValue * email =value.emailAddresses.firstObject;
     
     NSString *emailvalue = email.value;
-    NSLog(@"%@",email);
+    NSLog(@"Emaile is being printed %@",emailvalue);
+    NSLog(@"%lu",(unsigned long)[ emailvalue length]);
     if([emailvalue length] > 0){
-        self.emailLabel.text=  @"None";
+        self.emailLabel.text=  emailvalue;
     }
     else{
-        self.emailLabel.text= emailvalue;
+        self.emailLabel.text= @"None";
     }
         //self.emailLabel.text= email;
    
