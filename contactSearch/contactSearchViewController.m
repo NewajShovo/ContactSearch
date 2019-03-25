@@ -10,7 +10,6 @@
 #import <Contacts/Contacts.h>
 #import <ContactsUI/ContactsUI.h>
 #import "profileDetailViewController.h"
-#import "contactViewController.h"
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 @interface contactSearchViewController ()<CNContactViewControllerDelegate>
@@ -25,55 +24,19 @@
 
 - (void)viewDidLoad {
      //NSLog(@"Hello");
+    tableView.allowsMultipleSelection = true;
     [super viewDidLoad];
     
     allItems = [ [ NSMutableArray alloc]  init];
     onlyShow = [ [ NSMutableArray alloc] init];
     passItem = [ [ NSMutableArray alloc] init];
     changeItem = [ [ NSMutableArray alloc] init];
-    //UIView *header = self.headerView;
-    /*
-    store = [[CNContactStore alloc] init];
-    [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        if (granted == YES) {
-            //keys with fetching properties
-            NSArray *keys = [[NSArray alloc]initWithObjects:CNContactIdentifierKey, CNContactEmailAddressesKey, CNContactBirthdayKey, CNContactImageDataKey, CNContactPhoneNumbersKey, CNContactViewController.descriptorForRequiredKeys, nil];
-            NSString *containerId = self->store.defaultContainerIdentifier;
-            NSPredicate *predicate = [CNContact predicateForContactsInContainerWithIdentifier:containerId];
-            NSError *error;
-            NSArray *cnContacts = [self->store unifiedContactsMatchingPredicate:predicate keysToFetch:keys error:&error];
-            if (error) {
-                NSLog(@"error fetching contacts %@", error);
-            } else {
-                NSString *firstName;
-               // NSString *lastName;
-                for (CNContact *contact in cnContacts) {
-                    // copy data to my custom Contacts class.
-                    firstName = contact.givenName;
-                    //lastName = contact.familyName;
-                    ///NSLog(@"%@",firstName);
-                    if([firstName length] > 0){
-                    [self->allItems addObject:contact];
-                    [self->onlyShow addObject:firstName];
-                    [self-> passItem addObject:contact];
-                    [self ->changeItem addObject:contact];
-                    }
-                }
-            }
-            //NSLog(@"%@",onlyShow);
-        }
-    }];
-   //NSLog(@"%@",onlyShow);
-    NSLog(@"%@",onlyShow);
-    displayItems =  [ [ NSMutableArray alloc] initWithArray:onlyShow];
-    [[ NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardShown:) name:UIKeyboardDidShowNotification object:nil];
-    [[ NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
-   */
+
     [self loadContact];
 }
 -(void)reloadContactList {
     [displayItems removeAllObjects];
-    [changeItem removeAllObjects];
+    //[changeItem removeAllObjects];
     [onlyShow removeAllObjects];
      
     [self loadContact];
@@ -101,10 +64,9 @@
                     //lastName = contact.familyName;
                     ///NSLog(@"%@",firstName);
                     if([firstName length] > 0){
-                       [self->allItems addObject:contact];
+                        [self->allItems addObject:contact];
                         [self->onlyShow addObject:firstName];
                         [self-> passItem addObject:contact];
-                        [self ->changeItem addObject:contact];
                     }
                 }
             }
@@ -116,7 +78,7 @@
     displayItems =  [ [ NSMutableArray alloc] initWithArray:onlyShow];
     [[ NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardShown:) name:UIKeyboardDidShowNotification object:nil];
     [[ NSNotificationCenter defaultCenter] addObserver:self selector:@selector (keyboardHidden:) name:UIKeyboardWillHideNotification object:nil];
-    [ tableView reloadData];
+    [tableView reloadData];
      NSLog(@"%lu",(unsigned long)displayItems.count);
 }
 
@@ -127,14 +89,23 @@
     if (self)
     {
         UINavigationItem *navItem = self.navigationItem;
-        navItem.title = @"contactSearch";
+        navItem.title = @"ContactSearch";
         
         UIBarButtonItem *bbi = [ [ UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector (addNewItem:)];
         navItem.rightBarButtonItem = bbi;
+        UIBarButtonItem *bbi1 = [ [ UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector (buttonClicked:)];
         navItem.leftBarButtonItem = self.editButtonItem;
     }
     
     return self;
+    
+}
+#pragma mark - buttonClicked method
+
+- (IBAction) buttonClicked:(id)sender
+{
+    
+    
     
 }
 - (instancetype) inintWithStyle: (UITableViewStyle) style
@@ -142,8 +113,8 @@
     return [ self init];
 }
 
-
-
+#pragma mark - this is add item
+/*
 - (IBAction) addNewItem:(id)sender
 {
     UIAlertController *alertController = [UIAlertController
@@ -176,28 +147,80 @@
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
-
+*/
+- (IBAction) addNewItem:(id)sender
+{
+    
+        CNContactViewController *addContactVC = [CNContactViewController viewControllerForNewContact:nil];
+        addContactVC.delegate=self;
+        ///UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:addContactVC];
+        NSLog(@"%@",addContactVC);
+        [ self.navigationController pushViewController:addContactVC animated:YES];
+        NSLog(@"I am in addItem");
+    
+    
+    NSLog(@"HELLLo");
+    
+    ///[UIViewControllers presentViewController:navController];
+     ///[ pushViewController:navController animated:YES];
+    
+}
+- (void)contactViewController:(CNContactViewController *)viewController didCompleteWithContact:(nullable CNContact *)contact{
+ 
+  if ( contact == NULL)
+  {
+      NSLog(@"Done");
+       [ self.navigationController popViewControllerAnimated:YES];
+  }
+ 
+    else
+    {
+       //CNMutableContact *mutableContact = [[CNMutableContact alloc] init];
+        
+        [self reloadContactList];
+        
+    }
+    
+    
+    
+    //You will get the callback here
+}
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        NSString *value = onlyShow[indexPath.row];
-        NSLog(@"%lu",(unsigned long)onlyShow.count);
-        [onlyShow removeObject:value];
-        NSLog(@"%lu",(unsigned long)onlyShow.count);
-       
+        CNContact *value = allItems[indexPath.row];
+        changeItem.removeAllObjects;
+        onlyShow.removeAllObjects;
         displayItems.removeAllObjects;
-        NSLog(@"%lu",(unsigned long)displayItems.count);
-        for ( NSString *val in onlyShow)
+        //NSLog(@"%lu",(unsigned long)displayItems.count);
+        for ( CNContact *con in allItems)
         {
-            [displayItems addObject:val];
+            if( con.identifier ==value.identifier)
+            {
+                continue;
+            }
+            else{
+            
+                [displayItems addObject:con.givenName];
+                [onlyShow addObject:con.givenName];
+                [changeItem addObject:con];
+            
+            }
+            
+            
+            
         }
+        allItems.removeAllObjects;
+        allItems = [ [ NSMutableArray alloc] initWithArray:changeItem];
+        changeItem.removeAllObjects;
         NSLog(@"%lu",displayItems.count);
         
         
        
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    [tableView reloadData];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView reloadData];
+        //[self reloadContactList];
     }
 }
 
@@ -269,7 +292,7 @@
     [ self.navigationController pushViewController:profileViewController animated:YES];
     */
     
-    CNContact *value = changeItem [ indexPath.row];
+    CNContact *value = allItems[ indexPath.row];
     
   
     
@@ -345,34 +368,36 @@
     
    if ( [searchText length]==0)
    {
+       NSLog(@"Hello");
        [displayItems removeAllObjects];
-       [ displayItems addObjectsFromArray:onlyShow];
+       [displayItems addObjectsFromArray:onlyShow];
        
    } else{
-       [changeItem removeAllObjects];
+       //[changeItem removeAllObjects];
        [displayItems removeAllObjects];
-       for (CNContact * val in passItem)
+       for (CNContact * val in allItems)
        {
            NSString * string = val.givenName;
            NSRange  r = [ string rangeOfString:searchText options:NSCaseInsensitiveSearch];
            if(r.location != NSNotFound)
            {
-               [changeItem addObject:val];
+              // [changeItem addObject:val];
                [displayItems addObject:string];
            }
            
            
        }
    
-   
+   [tableView reloadData];
    }
-    [tableView reloadData];
+    
 }
 
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)asearchBar
 {
     NSLog(@"searchBar");
+    [ self reloadContactList];
     [ asearchBar resignFirstResponder];
 }
 

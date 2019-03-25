@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A0BEC02222422EAA001678D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0BEC02122422EAA001678D6 /* AppDelegate.m */; };
-		A0BEC02522422EAA001678D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0BEC02422422EAA001678D6 /* ViewController.m */; };
 		A0BEC02822422EAA001678D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0BEC02622422EAA001678D6 /* Main.storyboard */; };
 		A0BEC02A22422EAB001678D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0BEC02922422EAB001678D6 /* Assets.xcassets */; };
 		A0BEC02D22422EAB001678D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0BEC02B22422EAB001678D6 /* LaunchScreen.storyboard */; };
@@ -20,8 +19,6 @@
 		A0BEC064224247EC001678D6 /* profileDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0BEC062224247EC001678D6 /* profileDetailViewController.m */; };
 		A0BEC065224247EC001678D6 /* profileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0BEC063224247EC001678D6 /* profileDetailViewController.xib */; };
 		A0BEC06822427052001678D6 /* contactObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A0BEC06722427052001678D6 /* contactObject.m */; };
-		A0E9034A22435A29005456C0 /* contactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E9034822435A29005456C0 /* contactViewController.m */; };
-		A0E9034B22435A29005456C0 /* contactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E9034922435A29005456C0 /* contactViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +42,6 @@
 		A0BEC01D22422EAA001678D6 /* contactSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = contactSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BEC02022422EAA001678D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A0BEC02122422EAA001678D6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A0BEC02322422EAA001678D6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A0BEC02422422EAA001678D6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		A0BEC02722422EAA001678D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A0BEC02922422EAB001678D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0BEC02C22422EAB001678D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -66,9 +61,6 @@
 		A0BEC063224247EC001678D6 /* profileDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = profileDetailViewController.xib; sourceTree = "<group>"; };
 		A0BEC06622427052001678D6 /* contactObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = contactObject.h; sourceTree = "<group>"; };
 		A0BEC06722427052001678D6 /* contactObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = contactObject.m; sourceTree = "<group>"; };
-		A0E9034722435A29005456C0 /* contactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = contactViewController.h; sourceTree = "<group>"; };
-		A0E9034822435A29005456C0 /* contactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = contactViewController.m; sourceTree = "<group>"; };
-		A0E9034922435A29005456C0 /* contactViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = contactViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,8 +112,6 @@
 			children = (
 				A0BEC02022422EAA001678D6 /* AppDelegate.h */,
 				A0BEC02122422EAA001678D6 /* AppDelegate.m */,
-				A0BEC02322422EAA001678D6 /* ViewController.h */,
-				A0BEC02422422EAA001678D6 /* ViewController.m */,
 				A0BEC02622422EAA001678D6 /* Main.storyboard */,
 				A0BEC02922422EAB001678D6 /* Assets.xcassets */,
 				A0BEC02B22422EAB001678D6 /* LaunchScreen.storyboard */,
@@ -129,15 +119,12 @@
 				A0BEC02F22422EAB001678D6 /* main.m */,
 				A0BEC05222422F0E001678D6 /* contactSearchViewController.h */,
 				A0BEC05322422F0E001678D6 /* contactSearchViewController.m */,
+				A0BEC05422422F0E001678D6 /* contactSearchViewController.xib */,
 				A0BEC06622427052001678D6 /* contactObject.h */,
 				A0BEC06722427052001678D6 /* contactObject.m */,
-				A0BEC05422422F0E001678D6 /* contactSearchViewController.xib */,
 				A0BEC061224247EC001678D6 /* profileDetailViewController.h */,
 				A0BEC062224247EC001678D6 /* profileDetailViewController.m */,
 				A0BEC063224247EC001678D6 /* profileDetailViewController.xib */,
-				A0E9034722435A29005456C0 /* contactViewController.h */,
-				A0E9034822435A29005456C0 /* contactViewController.m */,
-				A0E9034922435A29005456C0 /* contactViewController.xib */,
 				A0BEC03822422EAB001678D6 /* contactSearchTests */,
 			);
 			path = contactSearch;
@@ -267,7 +254,6 @@
 				A0BEC02D22422EAB001678D6 /* LaunchScreen.storyboard in Resources */,
 				A0BEC05622422F0E001678D6 /* contactSearchViewController.xib in Resources */,
 				A0BEC02A22422EAB001678D6 /* Assets.xcassets in Resources */,
-				A0E9034B22435A29005456C0 /* contactViewController.xib in Resources */,
 				A0BEC065224247EC001678D6 /* profileDetailViewController.xib in Resources */,
 				A0BEC02822422EAA001678D6 /* Main.storyboard in Resources */,
 			);
@@ -294,12 +280,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0BEC02522422EAA001678D6 /* ViewController.m in Sources */,
 				A0BEC05522422F0E001678D6 /* contactSearchViewController.m in Sources */,
 				A0BEC03022422EAB001678D6 /* main.m in Sources */,
 				A0BEC02222422EAA001678D6 /* AppDelegate.m in Sources */,
 				A0BEC064224247EC001678D6 /* profileDetailViewController.m in Sources */,
-				A0E9034A22435A29005456C0 /* contactViewController.m in Sources */,
 				A0BEC06822427052001678D6 /* contactObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
