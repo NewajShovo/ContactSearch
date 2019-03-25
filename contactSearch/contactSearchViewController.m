@@ -25,12 +25,15 @@
 - (void)viewDidLoad {
      //NSLog(@"Hello");
     tableView.allowsMultipleSelection = true;
+    check =true;
     [super viewDidLoad];
     
     allItems = [ [ NSMutableArray alloc]  init];
     onlyShow = [ [ NSMutableArray alloc] init];
     passItem = [ [ NSMutableArray alloc] init];
     changeItem = [ [ NSMutableArray alloc] init];
+    index = [ [ NSMutableArray alloc] init];
+    store= [ [ NSMutableArray alloc] init];
 
     [self loadContact];
 }
@@ -93,8 +96,8 @@
         
         UIBarButtonItem *bbi = [ [ UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector (addNewItem:)];
         navItem.rightBarButtonItem = bbi;
-        UIBarButtonItem *bbi1 = [ [ UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector (buttonClicked:)];
-        navItem.leftBarButtonItem = self.editButtonItem;
+        UIBarButtonItem *bbi1 = [ [ UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit   target:self action:@selector (buttonClicked:)];
+        navItem.leftBarButtonItem = bbi1;
     }
     
     return self;
@@ -104,50 +107,90 @@
 
 - (IBAction) buttonClicked:(id)sender
 {
+    NSLog(@"HELLO00000000");
+    UIBarButtonItem *backBtn =[[UIBarButtonItem alloc]initWithTitle:@"Delete" style:UIBarButtonItemStyleDone target:self action:@selector(donebuttonClicked:)];
+    backBtn.title = @"Delete";
+    self.navigationItem.leftBarButtonItem = backBtn;
     
+    ///UIBarButtonItem *change = "Done";
+   // item.leftBarButtonItem=
+    check =false;
+    NSLog(@"%d",check);
     
     
 }
+- (void) multipledelete: (CNContact *) temp
+{
+    NSLog(@"DDDDDDDDDDDD");
+    NSLog(@"%@",temp);
+    changeItem.removeAllObjects;
+    onlyShow.removeAllObjects;
+    displayItems.removeAllObjects;
+    for ( CNContact *con in allItems)
+    {
+        if( con.identifier ==temp.identifier)
+        {
+            continue;
+        }
+        else{
+            
+            [displayItems addObject:con.givenName];
+            [onlyShow addObject:con.givenName];
+            [changeItem addObject:con];
+            
+        }
+        
+        
+        
+    }
+    allItems.removeAllObjects;
+    allItems = [ [ NSMutableArray alloc] initWithArray:changeItem];
+    changeItem.removeAllObjects;
+    NSLog(@"%lu",displayItems.count);
+    //[ self.navigationController popViewControllerAnimated:YES];
+    
+    //[tableView deleteRowsAtIndexPaths:@[] withRowAnimation:UITableViewRowAnimationFade];
+    [tableView reloadData];
+    
+    
+    
+    check=1;
+    
+}
+
+
+
+
+#pragma mark - doneButtonClicked:
+
+- (IBAction) donebuttonClicked:(id)sender
+{
+    
+    NSLog(@"%@",index);
+
+    
+    for (CNContact *i in index)
+    {
+        
+        [ self multipledelete:i ];
+        
+    }
+    [self init];
+
+    
+    NSLog(@"HI There");
+    
+}
+
+
+
+
 - (instancetype) inintWithStyle: (UITableViewStyle) style
 {
     return [ self init];
 }
 
 #pragma mark - this is add item
-/*
-- (IBAction) addNewItem:(id)sender
-{
-    UIAlertController *alertController = [UIAlertController
-                                          alertControllerWithTitle:@"Add"
-                                          message:@"New Contact"
-                                          preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         textField.placeholder = @"Firstname";
-     }];
-    
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         textField.placeholder = @"PhoneNumber";
-     }];
-    
-    UIAlertAction *okAction = [UIAlertAction
-                               actionWithTitle:@"OK"
-                               style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action)
-                               {
-                                   UITextField *firstname = alertController.textFields.firstObject;
-                                   UITextField *phonenumber = alertController.textFields.lastObject;
-                                   
-                                   [self saveContact:firstname.text givenName:@"" phoneNumber:phonenumber.text];
-                                   [self loadContact];
-                                   [tableView reloadData];
-                               }];
-    
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-*/
 - (IBAction) addNewItem:(id)sender
 {
     
@@ -279,30 +322,15 @@
         NSLog(@"save error : %@", [error description]);
     }
 }
+#pragma mark - table view did select
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    profileDetailViewController *profileViewController = [ [ profileDetailViewController alloc] init];
-    CNContact *value =changeItem[ indexPath.row];
-    NSLog(@"*****%@",value);
-    profileViewController.data= value;
-    //profileViewController. = selectedItem;
-    //detailViewController.item = selectedItem;
-    [ self.navigationController pushViewController:profileViewController animated:YES];
-    */
+    
     
     CNContact *value = allItems[ indexPath.row];
     
-  
-    
-   
-   
-    
-    
-    
-  //  [self newContact:(id)];
-    
+    if( check == true){
     NSLog(@"%@",value);
     NSLog(@"DLJLDJSLJLKJKL");
     CNContactViewController *contactView = [ CNContactViewController viewControllerForContact:value];
@@ -312,12 +340,14 @@
     contactView.allowsActions = YES;
 
     [ self.navigationController pushViewController:contactView animated:YES];
-    
-    
-   // contactView.contactStore = store;
-    
-    
-    
+    }
+    else
+    {
+        NSLog(@"aaaaaaaaaa");
+        NSLog(@"%@",value);
+        [index addObject:value];
+        NSLog(@"%@",index);
+    }
     
     
 }
@@ -345,27 +375,12 @@
     }
 }
 
--(void)deleteContact:(CNContact*)contact {
-    CNMutableContact *mutableContact = contact.mutableCopy;
-    
-    CNContactStore *store = [[CNContactStore alloc] init];
-    CNSaveRequest *deleteRequest = [[CNSaveRequest alloc] init];
-    [deleteRequest deleteContact:mutableContact];
-    
-    NSError *error;
-    if([store executeSaveRequest:deleteRequest error:&error]) {
-        NSLog(@"delete complete");
-      [tableView reloadData];
-    }else {
-        NSLog(@"delete error : %@", [error description]);
-    }
-    
-}
 
 
 - (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    
+    [searchItem removeAllObjects];
+    searchItem = [ [ NSMutableArray alloc] initWithArray:allItems];
    if ( [searchText length]==0)
    {
        NSLog(@"Hello");
@@ -373,7 +388,8 @@
        [displayItems addObjectsFromArray:onlyShow];
        
    } else{
-       //[changeItem removeAllObjects];
+       NSLog(@"%lu",(unsigned long)allItems.count);
+       [changeItem removeAllObjects];
        [displayItems removeAllObjects];
        for (CNContact * val in allItems)
        {
@@ -381,12 +397,15 @@
            NSRange  r = [ string rangeOfString:searchText options:NSCaseInsensitiveSearch];
            if(r.location != NSNotFound)
            {
-              // [changeItem addObject:val];
-               [displayItems addObject:string];
+              [changeItem addObject:val];
+              [displayItems addObject:string];
            }
            
            
        }
+       allItems = [ [NSMutableArray alloc] initWithArray:changeItem];
+       changeItem.removeAllObjects;
+       NSLog(@"%@",allItems);
    
    [tableView reloadData];
    }
@@ -397,43 +416,16 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)asearchBar
 {
     NSLog(@"searchBar");
-    [ self reloadContactList];
+    allItems.removeAllObjects;
+    allItems= [ [ NSMutableArray alloc] initWithArray:searchItem];
+    searchItem.removeAllObjects;
+    [ tableView reloadData];
     [ asearchBar resignFirstResponder];
 }
 
 
 
--(IBAction)newContact:(id)sender {
-    
-    UIAlertController *alertController = [UIAlertController
-                                          alertControllerWithTitle:@"Add"
-                                          message:@"New Contact"
-                                          preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         textField.placeholder = @"Firstname";
-     }];
-    
-    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
-     {
-         textField.placeholder = @"PhoneNumber";
-     }];
-    
-    UIAlertAction *okAction = [UIAlertAction
-                               actionWithTitle:@"OK"
-                               style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action)
-                               {
-                                   UITextField *firstname = alertController.textFields.firstObject;
-                                   UITextField *phonenumber = alertController.textFields.lastObject;
-                                   
-                                   [self saveContact:firstname.text givenName:@"" phoneNumber:phonenumber.text];
-                               }];
-    
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-    
-}
+
 
 
 

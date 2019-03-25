@@ -22,7 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray *onlyShow;
     NSMutableArray * displayItems;
     NSMutableArray * passItem;
+    NSMutableArray * searchItem;
     CNContactStore *store ;
+    bool check ;
+    NSMutableArray *index;
+    NSMutableArray *multiple;
 }
 
 @end
